@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="api-base-url" content="http://localhost:8000" />
+    <title>Create an account — Internpath</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script type="module" src="js/auth.js"></script>
+  </head>
+  <body data-page="register">
+    <a href="#main" class="skip-link">Skip to registration</a>
+    <div class="auth-layout">
+      <aside class="auth-aside">
+        <a href="index.html" class="brand"
+          ><span class="brand-mark" data-icon="compass"></span>internpath<span
+            class="brand-dot"
+            >.</span
+          ></a
+        >
+        <div class="auth-story">
+          <span class="eyebrow">Start with possibility</span>
+          <h1>
+            You bring the ambition.<br />We’ll help with
+            <span class="accent">direction.</span>
+          </h1>
+          <p>
+            Take a small step toward something bigger. Build your profile and
+            discover opportunities that fit your potential.
+          </p>
+          <div class="auth-benefits">
+            <div class="auth-benefit">
+              <span data-icon="user"></span
+              ><span>A profile that tells your story</span>
+            </div>
+            <div class="auth-benefit">
+              <span data-icon="compass"></span
+              ><span>A clearer view of your options</span>
+            </div>
+            <div class="auth-benefit">
+              <span data-icon="book"></span
+              ><span>Practical guidance for growing your skills</span>
+            </div>
+          </div>
+        </div>
+        <p class="auth-aside-footer">Make room for your next chapter.</p>
+      </aside>
+      <main class="auth-main" id="main">
+        <div class="auth-form-wrap">
+          <a href="index.html" class="brand mobile-brand"
+            ><span class="brand-mark" data-icon="compass"></span>internpath.</a
+          ><a href="index.html" class="auth-back"
+            ><span data-icon="back"></span>Back to home</a
+          >
+          <h2>Your journey starts here.</h2>
+          <p class="auth-intro">Create your account. Find your direction.</p>
+          <div
+            id="auth-status"
+            class="status"
+            role="alert"
+            hidden
+            style="margin-bottom: 20px"
+          ></div>
+          <form id="auth-form" class="auth-form">
+            <div>
+              <label for="name">Full name</label
+              ><input
+                id="name"
+                name="name"
+                autocomplete="name"
+                required
+                minlength="2"
+                maxlength="100"
+                placeholder="How should we call you?"
+              />
+            </div>
+            <div>
+              <label for="email">Email address</label
+              ><input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                maxlength="254"
+                placeholder="you@example.com"
+              />
+            </div>
+            <div>
+              <label for="password">Password</label>
+              <div class="password-wrap">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="new-password"
+                  required
+                  minlength="8"
+                  maxlength="128"
+                  aria-describedby="password-help"
+                  placeholder="Choose a strong password"
+                /><button
+                  type="button"
+                  class="password-toggle"
+                  data-toggle-password="password"
+                  aria-label="Show password"
+                >
+                  Show
+                </button>
+              </div>
+              <p class="field-note" id="password-help">
+                Use at least 8 characters. Your password is never stored in this
+                browser.
+              </p>
+            </div>
+            <div>
+              <label for="confirm-password">Confirm password</label
+              ><input
+                id="confirm-password"
+                name="confirm_password"
+                type="password"
+                autocomplete="new-password"
+                required
+                minlength="8"
+                maxlength="128"
+                placeholder="Enter your password again"
+              />
+            </div>
+            <button class="btn btn-primary btn-full" type="submit">
+              Create my account
+            </button>
+          </form>
+          <p class="auth-switch">
+            Already have an account? <a href="login.html">Log in</a>
+          </p>
+          <noscript
+            ><p class="status">
+              Enable JavaScript to create an account.
+            </p></noscript
+          >
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

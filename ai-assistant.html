@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="api-base-url" content="http://localhost:8000" />
+    <title>Your AI assistant — Internpath</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <script type="module" src="js/assistant.js"></script>
+  </head>
+  <body data-page="assistant">
+    <a href="#main" class="skip-link">Skip to assistant</a>
+    <div class="app-shell">
+      <div id="app-chrome"></div>
+      <main class="app-content" id="main">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">A little clarity goes a long way</span>
+            <h1>Let’s figure out what’s next.</h1>
+            <p>
+              Your space to ask questions, explore options, and find direction.
+            </p>
+          </div>
+        </div>
+        <div
+          id="page-status"
+          class="status"
+          role="alert"
+          hidden
+          style="margin-bottom: 20px"
+        ></div>
+        <div class="assistant-layout">
+          <section
+            class="panel chat-panel"
+            aria-label="Internship guidance conversation"
+          >
+            <header class="chat-top">
+              <div class="assistant-identity">
+                <span class="empty-icon" data-icon="sparkles"></span>
+                <div>
+                  <h2>Your internship assistant</h2>
+                  <p id="assistant-mode">
+                    Grounded in your profile and available roles
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                id="clear-chat"
+                class="btn btn-ghost btn-small"
+              >
+                New chat
+              </button>
+            </header>
+            <div
+              id="chat-log"
+              class="chat-log"
+              role="log"
+              aria-live="polite"
+              aria-label="Conversation"
+            >
+              <div id="chat-welcome" class="chat-welcome">
+                <div class="empty-icon" data-icon="sparkles"></div>
+                <h3>Big questions. Small first steps.</h3>
+                <p>
+                  Tell me what’s on your mind. We’ll find a useful next step
+                  together.
+                </p>
+                <div class="chat-suggestions">
+                  <button
+                    type="button"
+                    class="suggestion"
+                    data-prompt="Which internships match my profile, and why?"
+                  >
+                    Which internships are a good fit for me?
+                    <span aria-hidden="true">↗</span></button
+                  ><button
+                    type="button"
+                    class="suggestion"
+                    data-prompt="What skills should I learn to improve my internship matches?"
+                  >
+                    What skills could I work on next?
+                    <span aria-hidden="true">↗</span></button
+                  ><button
+                    type="button"
+                    class="suggestion"
+                    data-prompt="Explain the eligibility requirements for my recommended internships."
+                  >
+                    Help me understand eligibility.
+                    <span aria-hidden="true">↗</span></button
+                  ><button
+                    type="button"
+                    class="suggestion"
+                    data-prompt="Help me make a practical internship preparation plan."
+                  >
+                    Where should I start preparing?
+                    <span aria-hidden="true">↗</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="chat-composer-wrap">
+              <div
+                id="chat-status"
+                class="status"
+                role="alert"
+                hidden
+                style="margin-bottom: 12px"
+              ></div>
+              <form id="chat-form" class="chat-composer">
+                <label for="message" class="sr-only"
+                  >Message your internship assistant</label
+                ><textarea
+                  id="message"
+                  name="message"
+                  rows="1"
+                  maxlength="4000"
+                  placeholder="Ask about roles, skills, or your next step…"
+                  required
+                  disabled
+                  aria-describedby="chat-help"
+                ></textarea
+                ><button
+                  type="submit"
+                  id="send-message"
+                  class="btn btn-primary"
+                  aria-label="Send message"
+                  disabled
+                >
+                  <span data-icon="send"></span>
+                </button>
+              </form>
+              <p class="chat-disclaimer" id="chat-help">
+                Guidance, not a guarantee. Verify important details. Shift +
+                Enter for a new line.
+              </p>
+            </div>
+          </section>
+          <aside class="assistant-sidebar">
+            <section class="panel">
+              <span class="eyebrow" style="margin-bottom: 15px"
+                >Your context</span
+              >
+              <h3>Guidance that starts with you.</h3>
+              <p>
+                The assistant uses the profile you’ve shared to make its advice
+                more relevant.
+              </p>
+              <div class="context-item">
+                <span>Your interests</span
+                ><strong id="context-interests">Not specified</strong>
+              </div>
+              <div class="context-item">
+                <span>Your skills</span
+                ><strong id="context-skills">Not specified</strong>
+              </div>
+              <div class="context-item" id="selected-role-context" hidden>
+                <span>Discussing this opportunity</span
+                ><strong id="context-role"></strong>
+              </div>
+              <a
+                href="dashboard.html#profile"
+                class="btn btn-soft btn-small btn-full"
+                >Update your profile <span data-icon="arrow"></span
+              ></a>
+            </section>
+            <section class="panel">
+              <h3>A useful place to start</h3>
+              <div class="step-list">
+                <div>Ask about a role’s required skills or eligibility.</div>
+                <div>Understand the gaps in your profile.</div>
+                <div>Turn your next step into a learning plan.</div>
+              </div>
+              <div class="separator" style="margin: 18px 0"></div>
+              <p class="help">
+                This conversation stays in this tab and clears when you leave or
+                refresh. Never share passwords or sensitive information.
+              </p>
+            </section>
+          </aside>
+        </div>
+        <noscript
+          ><p class="status">
+            JavaScript is required to use the assistant.
+          </p></noscript
+        >
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="api-base-url" content="http://localhost:8000" />
+    <title>Discover internships — Internpath</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <script type="module" src="js/recommendations.js"></script>
+  </head>
+  <body data-page="recommendations">
+    <a href="#main" class="skip-link">Skip to internships</a>
+    <div class="app-shell">
+      <div id="app-chrome"></div>
+      <main class="app-content" id="main">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">Room to grow. Places to go.</span>
+            <h1>Find your kind of opportunity.</h1>
+            <p>Explore roles that connect your skills to your next chapter.</p>
+          </div>
+          <a href="dashboard.html#profile" class="btn btn-secondary"
+            ><span data-icon="user"></span>Update profile</a
+          >
+        </div>
+        <div
+          id="page-status"
+          class="status"
+          role="alert"
+          hidden
+          style="margin-bottom: 20px"
+        ></div>
+        <form
+          id="filter-form"
+          class="filter-bar"
+          aria-label="Search and filter internships"
+        >
+          <div class="search-row">
+            <div class="search-field">
+              <label for="search" class="sr-only"
+                >Search role, company, or skill</label
+              ><span data-icon="search"></span
+              ><input
+                id="search"
+                name="query"
+                type="search"
+                placeholder="Search role, company, or skill…"
+                maxlength="200"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Find roles <span data-icon="arrow"></span>
+            </button>
+          </div>
+          <div class="filters">
+            <div>
+              <label for="location">Location</label
+              ><input
+                id="location"
+                name="location"
+                placeholder="Any location"
+                maxlength="100"
+              />
+            </div>
+            <div>
+              <label for="work-mode">Work mode</label
+              ><select id="work-mode" name="work_mode">
+                <option value="">All work modes</option>
+                <option value="remote">Remote</option>
+                <option value="hybrid">Hybrid</option>
+                <option value="onsite">On-site</option>
+              </select>
+            </div>
+            <div>
+              <label for="min-stipend">Minimum monthly stipend (INR)</label
+              ><input
+                id="min-stipend"
+                name="min_stipend"
+                type="number"
+                min="0"
+                max="1000000"
+                placeholder="Any stipend"
+              />
+            </div>
+            <button type="button" id="reset-filters" class="btn btn-ghost">
+              Clear filters
+            </button>
+          </div>
+        </form>
+        <div class="recommendation-note">
+          <span data-icon="sparkles"></span>
+          <p>
+            Match scores come from your profile, not a prediction of acceptance.
+            Check each role’s requirements and confirm details with the
+            employer. Demo roles are labeled.
+          </p>
+        </div>
+        <div class="results-header">
+          <p id="results-count" aria-live="polite">
+            Finding your possibilities…
+          </p>
+          <div class="sort-control">
+            <label for="sort">Sort by</label
+            ><select id="sort">
+              <option value="match">Best match</option>
+              <option value="stipend-desc">Highest monthly stipend</option>
+              <option value="deadline">Application deadline</option>
+              <option value="duration">Shortest duration</option>
+              <option value="title">Title A–Z</option>
+            </select>
+          </div>
+        </div>
+        <section
+          id="recommendations-results"
+          aria-label="Internship recommendations"
+          aria-live="polite"
+        >
+          <div class="loading" role="status">
+            <span class="spinner"></span>Loading recommendations…
+          </div>
+        </section>
+        <nav
+          id="pagination"
+          class="pagination"
+          aria-label="Results pages"
+          hidden
+        >
+          <button
+            id="previous-page"
+            class="btn btn-secondary btn-small"
+            type="button"
+          >
+            Previous</button
+          ><span id="page-number"></span
+          ><button
+            id="next-page"
+            class="btn btn-secondary btn-small"
+            type="button"
+          >
+            Next
+          </button>
+        </nav>
+        <footer class="app-footer">
+          <span>The right first step can take you a long way.</span
+          ><span
+            ><span data-icon="shield"></span>Matches grounded in your
+            profile.</span
+          >
+        </footer>
+        <noscript
+          ><p class="status">
+            JavaScript is required to load recommendations.
+          </p></noscript
+        >
+      </main>
+    </div>
+  </body>
+</html>

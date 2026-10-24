@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="api-base-url" content="http://localhost:8000">
+    <title>Your dashboard — Internpath</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script type="module" src="js/dashboard.js"></script>
+</head>
+
+<body data-page="dashboard"><a href="#main" class="skip-link">Skip to dashboard</a>
+    <div class="app-shell">
+        <div id="app-chrome"></div>
+        <main class="app-content" id="main">
+            <div class="page-heading">
+                <div><span class="eyebrow">Your career, in motion</span>
+                    <h1 id="greeting">Welcome to your next chapter.</h1>
+                    <p>A little progress today. A little closer to what’s next.</p>
+                </div><a href="#profile" class="btn btn-secondary"><span data-icon="edit"></span>Edit profile</a>
+            </div>
+            <div id="page-status" class="status" role="alert" hidden style="margin-bottom:22px"></div>
+            <section class="welcome-banner">
+                <div><span class="eyebrow">Make your next move</span>
+                    <h2>Your potential deserves the right opportunity.</h2>
+                    <p>Discover internships that line up with your skills and interests. Every great journey starts with
+                        a good first step.</p>
+                </div><a href="recommendations.html" class="btn">Explore internships <span data-icon="arrow"></span></a>
+            </section>
+            <section class="stat-grid" aria-label="Your overview">
+                <div class="stat-card">
+                    <div class="stat-icon" data-icon="target"></div>
+                    <div>
+                        <div class="stat-value" id="matches-count">—</div>
+                        <p class="stat-label">Recommended roles</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green" data-icon="bookmark"></div>
+                    <div>
+                        <div class="stat-value" id="favorites-count">—</div>
+                        <p class="stat-label">Saved opportunities</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon peach" data-icon="user"></div>
+                    <div>
+                        <div class="stat-value" id="profile-percent">—</div>
+                        <p class="stat-label">Profile completeness</p>
+                    </div>
+                </div>
+            </section>
+            <div class="dashboard-columns">
+                <section class="main-column" aria-labelledby="matches-heading">
+                    <div class="section-header">
+                        <div>
+                            <h2 id="matches-heading">A few possibilities for you</h2>
+                            <p>Personalized to your skills and preferences.</p>
+                        </div><a href="recommendations.html">View all <span aria-hidden="true">→</span></a>
+                    </div>
+                    <div id="dashboard-results" aria-live="polite">
+                        <div class="loading" role="status"><span class="spinner"></span>Finding your matches…</div>
+                    </div>
+                </section>
+                <aside class="dashboard-aside">
+                    <section class="panel profile-summary">
+                        <div class="profile-summary-top">
+                            <h2>Your profile</h2><a href="#profile" class="text-small">Edit</a>
+                        </div>
+                        <div class="profile-progress" role="progressbar" aria-label="Profile completeness"
+                            aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span
+                                id="profile-progress-bar"></span></div>
+                        <p class="help" id="profile-progress-label">Complete your profile for more useful matches.</p>
+                        <dl class="profile-list">
+                            <div>
+                                <dt>Education</dt>
+                                <dd id="summary-education">Not specified</dd>
+                            </div>
+                            <div>
+                                <dt>Top skills</dt>
+                                <dd id="summary-skills">Not specified</dd>
+                            </div>
+                            <div>
+                                <dt>Preferred location</dt>
+                                <dd id="summary-location">Not specified</dd>
+                            </div>
+                        </dl><a href="#profile" class="btn btn-soft btn-small btn-full">Fine-tune your profile <span
+                                data-icon="arrow"></span></a>
+                    </section>
+                    <section class="assistant-promo">
+                        <div class="empty-icon" data-icon="sparkles"></div>
+                        <h3>Not sure where to start?</h3>
+                        <p>Talk through your options, understand your matches, and work out your next step.</p><a
+                            href="ai-assistant.html" class="btn btn-primary btn-full">Ask your AI assistant <span
+                                data-icon="arrow"></span></a>
+                    </section>
+                </aside>
+            </div>
+            <section class="panel profile-editor" id="profile" aria-labelledby="profile-heading"><span class="eyebrow"
+                    style="margin-bottom:9px">Make it personal</span>
+                <h2 id="profile-heading">Tell us your story.</h2>
+                <p>Your profile powers your recommendations. Only share what you’re comfortable sharing. Separate
+                    multiple skills, interests, or locations with commas.</p>
+                <div id="profile-status" class="status" role="alert" hidden style="margin-bottom:20px"></div>
+                <form id="profile-form">
+                    <fieldset id="profile-fields" disabled style="border:0;padding:0;margin:0;min-width:0">
+                        <legend class="sr-only">Your education, skills, and internship preferences</legend>
+                        <div class="form-grid">
+                            <div><label for="full-name">Full name</label><input id="full-name" name="full_name"
+                                    autocomplete="name" maxlength="100"></div>
+                            <div><label for="education">College / university</label><input id="education"
+                                    name="education" maxlength="150" placeholder="Your institution"></div>
+                            <div><label for="degree">Degree</label><input id="degree" name="degree" maxlength="100"
+                                    placeholder="For example, B.Tech Computer Science"></div>
+                            <div><label for="year">Year of study</label><select id="year" name="year">
+                                    <option value="">Not specified</option value="1">Year 1</option>
+                                    <option value="2">Year 2</option>
+                                    <option value="3">Year 3</option>
+                                    <option value="4">Year 4</option>
+                                    <option value="5">Year 5</option>
+                                    <option value="6">Year 6</option>
+                                </select></div>
+                            <div><label for="cgpa">CGPA (out of 10)</label><input id="cgpa" name="cgpa" type="number"
+                                    min="0" max="10" step="0.01" placeholder="Not specified"></div>
+                            <div><label for="available-from">Available from</label><input id="available-from"
+                                    name="available_from" type="date"></div>
+                            <div class="field-wide"><label for="skills">Skills</label><input id="skills" name="skills"
+                                    maxlength="5000" placeholder="Python, communication, Figma"
+                                    aria-describedby="skills-help">
+                                <p class="field-note" id="skills-help">Up to 50 skills. List the skills you already
+                                    have.</p>
+                            </div>
+                            <div><label for="interests">Areas of interest</label><input id="interests" name="interests"
+                                    maxlength="3000" placeholder="Data science, design, marketing"></div>
+                            <div><label for="preferred-locations">Preferred locations</label><input
+                                    id="preferred-locations" name="preferred_locations" maxlength="2000"
+                                    placeholder="Bengaluru, Mumbai"></div>
+                            <div><label for="preferred-work-mode">Preferred work mode</label><select
+                                    id="preferred-work-mode" name="preferred_work_mode">
+                                    <option value="any">Open to anything</option value="remote">Remote</option>
+                                    <option value="hybrid">Hybrid</option>
+                                    <option value="onsite">On-site</option>
+                                </select></div>
+                            <div><label for="min-stipend">Minimum monthly stipend (INR)</label><input id="min-stipend"
+                                    name="min_stipend" type="number" min="0" max="1000000" step="1" placeholder="0">
+                                <p class="field-note">Use 0 if you have no minimum preference.</p>
+                            </div>
+                            <div><label for="max-duration">Maximum duration</label><select id="max-duration"
+                                    name="max_duration_months">
+                                    <option value="">No preference</option value="1">1 month</option value="2">2 months
+                                    </option value="3">3 months</option value="6">6 months</option value="12">12 months
+                                    </option value="24">24 months</option>
+                                </select></div>
+                            <div class="field-wide"><label for="bio">A little about you</label><textarea id="bio"
+                                    name="bio" maxlength="2000"
+                                    placeholder="What would you like to learn or work on?"></textarea></div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary" id="save-profile">Save
+                                my profile <span data-icon="check"></span></button><span class="help">You can come back
+                                and update this anytime.</span></div>
+                    </fieldset>
+                </form>
+            </section>
+            <footer class="app-footer"><span>Small steps. Meaningful progress.</span><span><span
+                        data-icon="shield"></span>Your journey, thoughtfully guided.</span></footer><noscript>
+                <p class="status">JavaScript is required to use your dashboard.</p>
+            </noscript>
+        </main>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="api-base-url" content="http://localhost:8000" />
+    <title>Internship details — Internpath</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <script type="module" src="js/internship-details.js"></script>
+  </head>
+  <body data-page="details">
+    <a href="#main" class="skip-link">Skip to internship details</a>
+    <div class="app-shell">
+      <div id="app-chrome"></div>
+      <main class="app-content" id="main">
+        <a class="back-link" href="recommendations.html"
+          ><span data-icon="back"></span>Back to opportunities</a
+        >
+        <div
+          id="page-status"
+          class="status"
+          role="alert"
+          hidden
+          style="margin-bottom: 20px"
+        ></div>
+        <div id="details-content" aria-live="polite">
+          <div class="loading" role="status">
+            <span class="spinner"></span>Getting the full picture…
+          </div>
+        </div>
+        <footer class="app-footer">
+          <span>Your next move starts with a closer look.</span
+          ><span
+            ><span data-icon="info"></span>Confirm current details with the
+            employer.</span
+          >
+        </footer>
+        <noscript
+          ><p class="status">
+            JavaScript is required to load internship details.
+          </p></noscript
+        >
+      </main>
+    </div>
+  </body>
+</html>

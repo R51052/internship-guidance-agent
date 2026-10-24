@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="api-base-url" content="http://localhost:8000" />
+    <title>Saved internships — Internpath</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <script type="module" src="js/favorites.js"></script>
+  </head>
+  <body data-page="favorites">
+    <a href="#main" class="skip-link">Skip to saved internships</a>
+    <div class="app-shell">
+      <div id="app-chrome"></div>
+      <main class="app-content" id="main">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">Keep your possibilities close</span>
+            <h1>Your shortlist. Your next chapter.</h1>
+            <p>The opportunities that caught your eye, all in one place.</p>
+          </div>
+          <a class="btn btn-primary" href="recommendations.html"
+            >Explore more <span data-icon="arrow"></span
+          ></a>
+        </div>
+        <div
+          id="page-status"
+          class="status"
+          role="alert"
+          hidden
+          style="margin-bottom: 20px"
+        ></div>
+        <div class="results-header">
+          <p id="favorites-count" aria-live="polite">
+            Loading saved opportunities…
+          </p>
+          <span class="pill pill-purple"
+            ><span data-icon="bookmark"></span>Saved for later</span
+          >
+        </div>
+        <section
+          id="favorites-results"
+          aria-label="Saved internships"
+          aria-live="polite"
+        >
+          <div class="loading" role="status">
+            <span class="spinner"></span>Opening your shortlist…
+          </div>
+        </section>
+        <footer class="app-footer">
+          <span>A shortlist today. A possibility tomorrow.</span
+          ><span
+            ><span data-icon="info"></span>Saving a role does not submit an
+            application.</span
+          >
+        </footer>
+        <noscript
+          ><p class="status">
+            JavaScript is required to load saved internships.
+          </p></noscript
+        >
+      </main>
+    </div>
+  </body>
+</html>

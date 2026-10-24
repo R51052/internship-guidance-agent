@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="api-base-url" content="http://localhost:8000" />
+    <title>Log in — Internpath</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script type="module" src="js/auth.js"></script>
+  </head>
+  <body data-page="login">
+    <a href="#main" class="skip-link">Skip to login</a>
+    <div class="auth-layout">
+      <aside class="auth-aside">
+        <a href="index.html" class="brand"
+          ><span class="brand-mark" data-icon="compass"></span>internpath<span
+            class="brand-dot"
+            >.</span
+          ></a
+        >
+        <div class="auth-story">
+          <span class="eyebrow">Your future is taking shape</span>
+          <h1>
+            A little direction.<br />A world of
+            <span class="accent">possibility.</span>
+          </h1>
+          <p>
+            Pick up where you left off. Your next opportunity might be closer
+            than you think.
+          </p>
+          <div class="auth-benefits">
+            <div class="auth-benefit">
+              <span data-icon="target"></span
+              ><span>Recommendations that reflect your skills</span>
+            </div>
+            <div class="auth-benefit">
+              <span data-icon="bookmark"></span
+              ><span>Your favorite opportunities in one place</span>
+            </div>
+            <div class="auth-benefit">
+              <span data-icon="sparkles"></span
+              ><span>Guidance for every “what’s next?”</span>
+            </div>
+          </div>
+        </div>
+        <p class="auth-aside-footer">Your next chapter starts here.</p>
+      </aside>
+      <main class="auth-main" id="main">
+        <div class="auth-form-wrap">
+          <a href="index.html" class="brand mobile-brand"
+            ><span class="brand-mark" data-icon="compass"></span>internpath.</a
+          ><a href="index.html" class="auth-back"
+            ><span data-icon="back"></span>Back to home</a
+          >
+          <h2>Welcome back.</h2>
+          <p class="auth-intro">Let’s take the next step in your journey.</p>
+          <div
+            id="auth-status"
+            class="status"
+            role="alert"
+            hidden
+            style="margin-bottom: 20px"
+          ></div>
+          <form id="auth-form" class="auth-form">
+            <div>
+              <label for="email">Email address</label
+              ><input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+                maxlength="254"
+              />
+            </div>
+            <div>
+              <label for="password">Password</label>
+              <div class="password-wrap">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                  maxlength="128"
+                  placeholder="Enter your password"
+                /><button
+                  type="button"
+                  class="password-toggle"
+                  data-toggle-password="password"
+                  aria-label="Show password"
+                >
+                  Show
+                </button>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-full" type="submit">
+              Log in
+            </button>
+          </form>
+          <p class="auth-switch">
+            New here? <a href="register.html">Create an account</a>
+          </p>
+          <p class="help" style="text-align: center; margin-top: 30px">
+            Your profile and saved roles will be right here.
+          </p>
+          <noscript
+            ><p class="status">Enable JavaScript to log in.</p></noscript
+          >
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

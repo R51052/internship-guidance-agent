@@ -1,0 +1,30 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+backend/.env
+frontend-react/.env
+frontend-react/.env.local
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node/Vite dependencies and build output
+frontend-react/node_modules/
+frontend-react/dist/
+npm-debug.log*
+
+# Local runtime logs
+*.log
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
