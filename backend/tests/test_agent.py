@@ -15,6 +15,7 @@ from backend.services.agent_service import AgentService
 from backend.services.coach_service import CoachService
 from backend.services.llm_service import LLMService, LLMUnavailable, SYSTEM_PROMPT
 from backend.services.student_plan import build_student_plan
+from backend.services.safety_service import safety_check
 from backend.services.resume_service import extract_resume, generate_document
 
 
@@ -116,6 +117,14 @@ def test_resume_upload_and_generation_endpoints(client, headers):
     assert generated.status_code == 200
     assert generated.headers["content-type"].startswith("application/pdf")
     assert generated.content.startswith(b"%PDF")
+
+
+def test_safety_checker_is_conservative_and_does_not_claim_certainty():
+    from backend.models import Internship
+    item = Internship(id="risk", title="Remote Internship", company="Example", description="Pay registration fee and contact via WhatsApp only", domain="Technology", skills_required=["Python"], location="India", apply_url="https://example.invalid/apply")
+    result = safety_check(item)
+    assert result["risk_level"] == "high_risk_signals"
+    assert "heuristic" in result["message"]
 
 
 def test_skill_gap_and_compare_return_profile_based_results(client, headers, profile_data):

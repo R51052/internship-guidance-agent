@@ -54,6 +54,31 @@ def test_favorites_save_deduplicate_read_and_delete(client, headers):
     assert client.delete("/api/favorites/demo-python", headers=headers).status_code == 204
     assert client.get("/api/favorites", headers=headers).json()["total"] == 0
     assert client.delete("/api/favorites/demo-python", headers=headers).status_code == 404
+
+
+def test_application_tracker_create_update_list_and_remove(client, headers):
+    created = client.post("/api/applications", headers=headers, json={"internship_id": "demo-python", "status": "interested"})
+    assert created.status_code == 201
+    item = created.json()
+    assert item["internship"]["id"] == "demo-python"
+    assert "safety" in item
+    duplicate = client.post("/api/applications", headers=headers, json={"internship_id": "demo-python"})
+    assert duplicate.status_code == 409
+    updated = client.patch(f"/api/applications/{item['id']}", headers=headers, json={"status": "applied", "notes": "Submitted after checking the official source."})
+    assert updated.status_code == 200
+    assert updated.json()["status"] == "applied"
+    listed = client.get("/api/applications", headers=headers)
+    assert listed.status_code == 200 and listed.json()["total"] == 1
+    assert client.delete(f"/api/applications/{item['id']}", headers=headers).status_code == 204
+    assert client.get("/api/applications", headers=headers).json()["total"] == 0
+
+
+def test_application_tracker_is_private(client, headers, account):
+    created = client.post("/api/applications", headers=headers, json={"internship_id": "demo-python"})
+    other = client.post("/api/auth/register", json={"name": "Other Student", "email": "other-app@example.com", "password": "Strong-passphrase2!"})
+    other_headers = {"Authorization": f"Bearer {other.json()['access_token']}"}
+    assert client.get("/api/applications", headers=other_headers).json()["total"] == 0
+    assert client.patch(f"/api/applications/{created.json()['id']}", headers=other_headers, json={"status": "applied"}).status_code == 404
     assert client.post("/api/favorites", headers=headers, json={"internship_id": "fabricated"}).status_code == 404
 
 

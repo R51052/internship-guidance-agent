@@ -9,7 +9,7 @@ from pymongo.errors import PyMongoError
 
 from backend.config import Settings
 from backend.database import create_repository
-from backend.routes import agent, auth, favorites, health, profiles, recommendations
+from backend.routes import agent, applications, auth, favorites, health, profiles, recommendations
 
 
 def create_app(settings: Settings | None = None, repository=None):
@@ -49,7 +49,7 @@ def create_app(settings: Settings | None = None, repository=None):
     async def database_error(request: Request, exception: PyMongoError):
         return JSONResponse(status_code=503, content={"detail": "Database temporarily unavailable"})
 
-    for route in (health.router, auth.router, profiles.router, recommendations.router, agent.router, favorites.router):
+    for route in (health.router, auth.router, profiles.router, recommendations.router, agent.router, favorites.router, applications.router):
         app.include_router(route, prefix="/api")
     app.include_router(health.router, include_in_schema=False)
     return app

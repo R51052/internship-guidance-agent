@@ -132,6 +132,28 @@ class ResumeGenerateRequest(StrictModel):
     filename: str = Field(default="internpath-resume", min_length=1, max_length=80)
 
 
+ApplicationStatus = Literal["interested", "preparing", "applied", "assessment", "interview", "selected", "rejected", "withdrawn"]
+
+
+class ApplicationCreate(StrictModel):
+    internship_id: InternshipID
+    status: ApplicationStatus = "interested"
+    application_date: date | None = None
+    deadline: date | None = None
+    follow_up_date: date | None = None
+    resume_version: str = Field(default="", max_length=120)
+    notes: str = Field(default="", max_length=2000)
+
+
+class ApplicationUpdate(StrictModel):
+    status: ApplicationStatus | None = None
+    application_date: date | None = None
+    deadline: date | None = None
+    follow_up_date: date | None = None
+    resume_version: str | None = Field(default=None, max_length=120)
+    notes: str | None = Field(default=None, max_length=2000)
+
+
 class CompareRequest(StrictModel):
     internship_ids: list[InternshipID] = Field(min_length=2, max_length=5)
 
