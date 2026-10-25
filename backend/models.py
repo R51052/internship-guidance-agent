@@ -126,6 +126,12 @@ class CoachRequest(StrictModel):
     question_index: int = Field(default=0, ge=0, le=10)
 
 
+class ResumeGenerateRequest(StrictModel):
+    content: str = Field(default="", max_length=20000)
+    format: Literal["pdf", "docx"] = "pdf"
+    filename: str = Field(default="internpath-resume", min_length=1, max_length=80)
+
+
 class CompareRequest(StrictModel):
     internship_ids: list[InternshipID] = Field(min_length=2, max_length=5)
 

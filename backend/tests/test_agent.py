@@ -1,4 +1,5 @@
 import json
+from io import BytesIO
 
 import httpx
 import pytest
@@ -14,6 +15,7 @@ from backend.services.agent_service import AgentService
 from backend.services.coach_service import CoachService
 from backend.services.llm_service import LLMService, LLMUnavailable, SYSTEM_PROMPT
 from backend.services.student_plan import build_student_plan
+from backend.services.resume_service import extract_resume, generate_document
 
 
 def test_mock_chat_is_labelled_and_uses_only_database(client, app, headers, monkeypatch):
@@ -78,6 +80,42 @@ def test_coach_endpoint_supports_resume_review(client, headers):
     assert response.status_code == 200
     assert response.json()["mode"] == "resume"
     assert response.json()["score"] == 75
+
+
+def test_resume_service_extracts_docx_and_validates_formatting():
+    stream, media_type, filename = generate_document(
+        "Education\nB.Tech Computer Science\nSkills\nPython, SQL\nProjects\nInternpath\nemail@example.com",
+        "docx",
+        "student resume",
+    )
+    extracted = extract_resume(filename, media_type, stream.getvalue())
+    assert extracted["format"] == "docx"
+    assert "Education" in extracted["text"]
+    assert extracted["formatting"]["score"] > 0
+
+
+def test_resume_service_generates_pdf_and_rejects_unsupported_files():
+    stream, media_type, filename = generate_document("Education\nB.Tech\nemail@example.com", "pdf", "resume")
+    assert media_type == "application/pdf"
+    assert filename.endswith(".pdf")
+    assert stream.getvalue().startswith(b"%PDF")
+    with pytest.raises(ValueError, match="Only PDF and DOCX"):
+        extract_resume("resume.txt", "text/plain", b"Education")
+
+
+def test_resume_upload_and_generation_endpoints(client, headers):
+    response = client.post("/api/agent/resume/upload", headers=headers, files={
+        "file": ("resume.docx", BytesIO(generate_document("Education\nB.Tech\nemail@example.com", "docx", "resume")[0].getvalue()),
+                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
+    })
+    assert response.status_code == 200
+    assert response.json()["format"] == "docx"
+    generated = client.post("/api/agent/resume/generate", headers=headers, json={
+        "content": "Education\nB.Tech\nemail@example.com", "format": "pdf", "filename": "student resume",
+    })
+    assert generated.status_code == 200
+    assert generated.headers["content-type"].startswith("application/pdf")
+    assert generated.content.startswith(b"%PDF")
 
 
 def test_skill_gap_and_compare_return_profile_based_results(client, headers, profile_data):

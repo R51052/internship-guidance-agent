@@ -2,13 +2,15 @@ from collections import deque
 from threading import Lock
 from time import monotonic
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
+from fastapi.responses import StreamingResponse
 
 from backend.agent_tools import execute_tool
-from backend.models import ChatRequest, CoachRequest, CompareRequest, SkillGapRequest
+from backend.models import ChatRequest, CoachRequest, CompareRequest, ResumeGenerateRequest, SkillGapRequest
 from backend.routes.profiles import load_profile
 from backend.services.agent_service import AgentService
 from backend.services.coach_service import CoachService
+from backend.services.resume_service import extract_resume, generate_document
 from backend.utils.security import current_user, get_repository
 
 router = APIRouter(prefix="/agent", tags=["agent"])
@@ -50,6 +52,27 @@ def chat(data: ChatRequest, request: Request, user=Depends(rate_limited_user), r
 @router.post("/coach")
 def coach(data: CoachRequest, request: Request, user=Depends(rate_limited_user), repo=Depends(get_repository)):
     return CoachService(repo, request.app.state.settings).coach(load_profile(repo, user), data)
+
+
+@router.post("/resume/upload")
+async def upload_resume(file: UploadFile = File(...), user=Depends(rate_limited_user)):
+    try:
+        data = await file.read(5 * 1024 * 1024 + 1)
+        return extract_resume(file.filename or "resume", file.content_type, data)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(400, "Resume could not be read. Check that the file is a valid PDF or DOCX.") from exc
+
+
+@router.post("/resume/generate")
+def generate_resume(data: ResumeGenerateRequest, user=Depends(rate_limited_user)):
+    try:
+        content, media_type, filename = generate_document(data.content, data.format, data.filename)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    return StreamingResponse(content, media_type=media_type,
+                             headers={"Content-Disposition": f'attachment; filename="{filename}"'})
 
 
 @router.post("/skill-gap")
