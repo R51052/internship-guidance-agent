@@ -29,6 +29,9 @@ def test_mock_chat_is_labelled_and_uses_only_database(client, app, headers, monk
     assert result["tool_calls"][0]["tool"] == "explain_recommendations"
     assert len(result["student_plan"]["weeks"]) == 4
     assert result["student_plan"]["application_checklist"]
+    assert len(result["student_plan"]["interview_questions"]) == 5
+    assert result["student_plan"]["project_ideas"]
+    assert result["student_plan"]["application_tracker_fields"]
 
 
 def test_student_plan_uses_match_gaps_without_inventing_employer_facts():

@@ -16,6 +16,19 @@ def build_student_plan(profile, recommendations):
     else:
         phase = "Build evidence of skills and clarify your target role"
 
+    project_ideas = [
+        f"Build a small {focus[0]} project with a clear README and demo.",
+        f"Create a {focus[1] if len(focus) > 1 else 'problem-solving'} project that consumes a public API or dataset.",
+        "Add tests, error handling, and a short architecture note to an existing project.",
+    ]
+    interview_questions = [
+        f"Explain a project where you used {focus[0]}. What trade-offs did you make?",
+        "Tell me about a bug or failed approach and how you debugged it.",
+        "How would you break a new technical problem into smaller tasks?",
+        "Which part of your project would you improve with more time, and why?",
+        "What are you learning now, and how are you measuring progress?",
+    ]
+
     return {
         "title": "Your next 30 days",
         "target_role": role,
@@ -64,5 +77,19 @@ def build_student_plan(profile, recommendations):
             "Updated GitHub project with a clear README",
             "Profile skills kept honest and current",
             "Official listing checked before applying",
+        ],
+        "project_ideas": project_ideas,
+        "interview_questions": interview_questions,
+        "resume_actions": [
+            "Lead each project bullet with an action verb and name the technology used.",
+            "Describe the problem, your contribution, and a measurable result where possible.",
+            "Keep the skills section aligned with what you can explain in an interview.",
+        ],
+        "application_tracker_fields": [
+            "Company and role",
+            "Official source URL",
+            "Eligibility checked",
+            "Date applied and current status",
+            "Next follow-up date",
         ],
     }

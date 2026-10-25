@@ -122,7 +122,7 @@ cd frontend-react
 npm run build
 ```
 
-The React app supports registration, login, MongoDB-backed profile persistence, opportunity search/filtering, recommendations, and the AI assistant. The assistant now returns a deterministic four-week student action plan based on the student's profile and top match, including skill focus, project work, interview preparation, and an application checklist. It does not claim that an application was submitted; external application actions remain on the official employer page.
+The React app supports registration, login, MongoDB-backed profile persistence, opportunity search/filtering, recommendations, and the AI assistant. The assistant returns a deterministic student toolkit based on the student's profile and top match: a four-week plan, project ideas, mock interview questions, resume upgrades, skill focus, and an application tracker checklist. It does not claim that an application was submitted; external application actions remain on the official employer page.
 
 ## Live-data limitation
 
