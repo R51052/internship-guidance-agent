@@ -8,9 +8,10 @@ from pydantic import ValidationError
 from backend.agent_tools import execute_tool, tool_schemas
 from backend.config import Settings
 from backend.database import MemoryRepository
-from backend.models import ChatRequest, Profile
+from backend.models import ChatRequest, CoachRequest, Profile
 from backend.scripts.seed_demo_data import seed_repository
 from backend.services.agent_service import AgentService
+from backend.services.coach_service import CoachService
 from backend.services.llm_service import LLMService, LLMUnavailable, SYSTEM_PROMPT
 from backend.services.student_plan import build_student_plan
 
@@ -42,6 +43,41 @@ def test_student_plan_uses_match_gaps_without_inventing_employer_facts():
     assert plan["target_role"] == "Software Intern"
     assert plan["focus_skills"] == ["Python", "SQL"]
     assert "Example" not in " ".join(plan["weeks"][0]["tasks"])
+
+
+def test_interview_coach_is_question_by_question_and_safe(settings):
+    repo = MemoryRepository()
+    seed_repository(repo)
+    service = CoachService(repo, settings)
+    first = service.coach(Profile(year=3), CoachRequest(mode="interview", content="start"))
+    assert first["question_index"] == 0
+    answer = service.coach(Profile(year=3), CoachRequest(mode="interview", content="I built a Python project and learned from the result."))
+    assert answer["score"] is not None
+    assert answer["feedback"]
+    assert answer["next_question_index"] == 1
+
+
+def test_resume_coach_reports_detected_sections_without_inventing_experience(settings):
+    repo = MemoryRepository()
+    seed_repository(repo)
+    result = CoachService(repo, settings).coach(
+        Profile(year=3),
+        CoachRequest(mode="resume", content="Education: B.Tech\nSkills: Python\nProjects: Internship tracker"),
+    )
+    assert result["mode"] == "resume"
+    assert result["score"] == 75
+    assert any("experience" in item.casefold() for item in result["checks"])
+    assert "invent" not in result["feedback"].casefold()
+
+
+def test_coach_endpoint_supports_resume_review(client, headers):
+    response = client.post("/api/agent/coach", headers=headers, json={
+        "mode": "resume",
+        "content": "Education: B.Tech\nSkills: Python\nProjects: API project",
+    })
+    assert response.status_code == 200
+    assert response.json()["mode"] == "resume"
+    assert response.json()["score"] == 75
 
 
 def test_skill_gap_and_compare_return_profile_based_results(client, headers, profile_data):

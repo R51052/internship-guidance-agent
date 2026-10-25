@@ -5,9 +5,10 @@ from time import monotonic
 from fastapi import APIRouter, Depends, HTTPException, Request
 
 from backend.agent_tools import execute_tool
-from backend.models import ChatRequest, CompareRequest, SkillGapRequest
+from backend.models import ChatRequest, CoachRequest, CompareRequest, SkillGapRequest
 from backend.routes.profiles import load_profile
 from backend.services.agent_service import AgentService
+from backend.services.coach_service import CoachService
 from backend.utils.security import current_user, get_repository
 
 router = APIRouter(prefix="/agent", tags=["agent"])
@@ -44,6 +45,11 @@ def rate_limited_user(request: Request, user=Depends(current_user)):
 @router.post("/chat")
 def chat(data: ChatRequest, request: Request, user=Depends(rate_limited_user), repo=Depends(get_repository)):
     return AgentService(repo, request.app.state.settings).chat(load_profile(repo, user), data)
+
+
+@router.post("/coach")
+def coach(data: CoachRequest, request: Request, user=Depends(rate_limited_user), repo=Depends(get_repository)):
+    return CoachService(repo, request.app.state.settings).coach(load_profile(repo, user), data)
 
 
 @router.post("/skill-gap")

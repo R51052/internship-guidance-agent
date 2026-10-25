@@ -119,6 +119,13 @@ class ChatRequest(StrictModel):
         return values
 
 
+class CoachRequest(StrictModel):
+    mode: Literal["interview", "resume"]
+    content: str = Field(min_length=1, max_length=10000)
+    internship_id: InternshipID | None = None
+    question_index: int = Field(default=0, ge=0, le=10)
+
+
 class CompareRequest(StrictModel):
     internship_ids: list[InternshipID] = Field(min_length=2, max_length=5)
 
