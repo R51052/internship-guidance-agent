@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from backend.routes.profiles import load_profile
 from backend.services.internship_service import InternshipService
 from backend.services.matching import WEIGHTS, match_internship, rank_internships
+from backend.services.freshness_service import freshness
 from backend.utils.security import current_user, get_repository
 
 router = APIRouter(tags=["internships", "recommendations"])
@@ -27,7 +28,7 @@ def public_internships(q: str = Query(default="", max_length=200),
                        repo=Depends(get_repository)):
     """Public read-only catalog for React discovery; recommendations remain private."""
     items = InternshipService(repo).search(query=q, location=location, domain=domain, work_mode=work_mode)
-    result = [item.model_dump(mode="json") for item in items[offset:offset + limit]]
+    result = [{**item.model_dump(mode="json"), "freshness": freshness(item)} for item in items[offset:offset + limit]]
     return {"internships": result, "total": len(items), "limit": limit, "offset": offset,
             "is_demo": repo.mode == "demo"}
 
@@ -44,7 +45,7 @@ def internships(q: str = Query(default="", max_length=200),
                 user=Depends(current_user), repo=Depends(get_repository)):
     items = InternshipService(repo).search(query=q, location=location, domain=domain, work_mode=work_mode,
                                          min_stipend=min_stipend, include_expired=include_expired)
-    result = [item.model_dump(mode="json") for item in items[offset:offset + limit]]
+    result = [{**item.model_dump(mode="json"), "freshness": freshness(item)} for item in items[offset:offset + limit]]
     return {"internships": result, "total": len(items), "limit": limit, "offset": offset,
             "is_demo": repo.mode == "demo"}
 

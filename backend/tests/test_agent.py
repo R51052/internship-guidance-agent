@@ -16,6 +16,8 @@ from backend.services.coach_service import CoachService
 from backend.services.llm_service import LLMService, LLMUnavailable, SYSTEM_PROMPT
 from backend.services.student_plan import build_student_plan
 from backend.services.safety_service import safety_check
+from backend.services.github_service import evaluate_repository, parse_repo_url
+from backend.services.freshness_service import freshness
 from backend.services.resume_service import extract_resume, generate_document
 
 
@@ -125,6 +127,27 @@ def test_safety_checker_is_conservative_and_does_not_claim_certainty():
     result = safety_check(item)
     assert result["risk_level"] == "high_risk_signals"
     assert "heuristic" in result["message"]
+
+
+def test_freshness_labels_recent_and_old_records():
+    from datetime import datetime, timedelta, timezone
+    from backend.models import Internship
+    recent = Internship(id="fresh", title="Fresh Role", company="Example", description="A source-linked role.", domain="Technology", skills_required=["Python"], location="India", last_synced_at=datetime.now(timezone.utc) - timedelta(days=2))
+    old = Internship(id="old", title="Old Role", company="Example", description="A source-linked role.", domain="Technology", skills_required=["Python"], location="India", last_synced_at=datetime.now(timezone.utc) - timedelta(days=45))
+    assert freshness(recent)["status"] == "fresh"
+    assert freshness(old)["status"] == "old"
+
+
+def test_github_evaluator_uses_only_public_metadata():
+    assert parse_repo_url("https://github.com/R51052/internship-guidance-agent") == ("R51052", "internship-guidance-agent")
+    def handler(request):
+        if request.url.path.endswith("/contents"):
+            return httpx.Response(200, json=[{"name": "README.md"}, {"name": "tests"}, {"name": ".github"}])
+        return httpx.Response(200, json={"name": "demo", "description": "Demo project", "stargazers_count": 2})
+    result = evaluate_repository("https://github.com/example/demo", transport=httpx.MockTransport(handler))
+    assert result["repository"] == "example/demo"
+    assert result["checks"]["readme"] is True
+    assert result["message"].startswith("Read-only")
 
 
 def test_skill_gap_and_compare_return_profile_based_results(client, headers, profile_data):

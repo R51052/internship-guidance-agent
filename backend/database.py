@@ -94,11 +94,13 @@ class MongoRepository:
                 "MongoDB is unreachable. Check Atlas Network Access, the cluster URI, and your internet connection."
             ) from exc
         self.db.users.create_index("email", unique=True)
-        for collection in ("users", "profiles", "internships", "favorites", "applications", "sessions"):
+        for collection in ("users", "profiles", "internships", "favorites", "applications", "interview_history", "progress", "sessions"):
             self.db[collection].create_index("id", unique=True)
         self.db.favorites.create_index([("user_id", ASCENDING), ("internship_id", ASCENDING)], unique=True)
         self.db.sessions.create_index("expires_at", expireAfterSeconds=0)
         self.db.applications.create_index([("user_id", ASCENDING), ("internship_id", ASCENDING)], unique=True)
+        self.db.interview_history.create_index([("user_id", ASCENDING), ("created_at", ASCENDING)])
+        self.db.progress.create_index([("user_id", ASCENDING), ("skill", ASCENDING)], unique=True)
 
     @staticmethod
     def _clean(document):

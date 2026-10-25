@@ -154,6 +154,17 @@ class ApplicationUpdate(StrictModel):
     notes: str | None = Field(default=None, max_length=2000)
 
 
+class ProgressUpdate(StrictModel):
+    skill: str = Field(min_length=1, max_length=100)
+    status: Literal["planned", "learning", "practiced", "completed"] = "planned"
+    minutes: int = Field(default=0, ge=0, le=1440)
+    note: str = Field(default="", max_length=500)
+
+
+class GithubEvaluateRequest(StrictModel):
+    url: str = Field(min_length=1, max_length=300)
+
+
 class CompareRequest(StrictModel):
     internship_ids: list[InternshipID] = Field(min_length=2, max_length=5)
 

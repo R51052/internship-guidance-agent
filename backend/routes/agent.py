@@ -1,4 +1,5 @@
 from collections import deque
+from uuid import uuid4
 from threading import Lock
 from time import monotonic
 
@@ -11,6 +12,7 @@ from backend.routes.profiles import load_profile
 from backend.services.agent_service import AgentService
 from backend.services.coach_service import CoachService
 from backend.services.resume_service import extract_resume, generate_document
+from backend.database import utcnow
 from backend.utils.security import current_user, get_repository
 
 router = APIRouter(prefix="/agent", tags=["agent"])
@@ -51,7 +53,14 @@ def chat(data: ChatRequest, request: Request, user=Depends(rate_limited_user), r
 
 @router.post("/coach")
 def coach(data: CoachRequest, request: Request, user=Depends(rate_limited_user), repo=Depends(get_repository)):
-    return CoachService(repo, request.app.state.settings).coach(load_profile(repo, user), data)
+    result = CoachService(repo, request.app.state.settings).coach(load_profile(repo, user), data)
+    if data.mode == "interview" and result.get("score") is not None:
+        record = {"id": str(uuid4()), "user_id": user["id"], "question": result.get("question"),
+                  "answer": data.content, "score": result.get("score"), "feedback": result.get("feedback"),
+                  "question_index": result.get("question_index"), "created_at": utcnow()}
+        repo.insert("interview_history", record)
+        result["history_id"] = record["id"]
+    return result
 
 
 @router.post("/resume/upload")

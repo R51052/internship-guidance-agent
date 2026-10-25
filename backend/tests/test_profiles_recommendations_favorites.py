@@ -79,6 +79,18 @@ def test_application_tracker_is_private(client, headers, account):
     other_headers = {"Authorization": f"Bearer {other.json()['access_token']}"}
     assert client.get("/api/applications", headers=other_headers).json()["total"] == 0
     assert client.patch(f"/api/applications/{created.json()['id']}", headers=other_headers, json={"status": "applied"}).status_code == 404
+
+
+def test_progress_and_interview_history_are_persistent_and_private(client, headers):
+    progress = client.put("/api/student/progress", headers=headers, json={"skill": "SQL", "status": "learning", "minutes": 30})
+    assert progress.status_code == 200
+    listed = client.get("/api/student/progress", headers=headers)
+    assert listed.status_code == 200 and listed.json()["total"] == 1
+    coach = client.post("/api/agent/coach", headers=headers, json={"mode": "interview", "content": "I built a Python project and measured the result."})
+    assert coach.status_code == 200 and coach.json().get("history_id")
+    history = client.get("/api/student/interview-history", headers=headers)
+    assert history.status_code == 200 and history.json()["total"] == 1
+    assert history.json()["average_score"] is not None
     assert client.post("/api/favorites", headers=headers, json={"internship_id": "fabricated"}).status_code == 404
 
 
