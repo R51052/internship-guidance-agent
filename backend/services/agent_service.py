@@ -6,6 +6,7 @@ from pydantic import ValidationError
 
 from backend.agent_tools import execute_tool, tool_schemas
 from backend.services.llm_service import LLMService, LLMUnavailable, SYSTEM_PROMPT
+from backend.services.student_plan import build_student_plan
 
 
 class AgentService:
@@ -104,8 +105,10 @@ class AgentService:
         else:
             summaries.append("No eligible internships were found in the database for your current profile.")
         database_summary = "\n\n".join(summaries)
+        student_plan = build_student_plan(profile, recommendations)
         answer = database_summary + "\n\n" + guidance
         return {"message": answer, "answer": answer, "mode": mode, "mock": mode == "mock",
                 "guidance": guidance, "database_summary": database_summary,
                 "warning": warning, "recommendations": recommendations, "tool_calls": trace,
-                "data_source": self.repository.mode, "is_demo": self.repository.mode == "demo"}
+                "student_plan": student_plan, "data_source": self.repository.mode,
+                "is_demo": self.repository.mode == "demo"}

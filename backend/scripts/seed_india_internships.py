@@ -1,7 +1,7 @@
 """Synchronize source-linked internship records focused on India.
 
 The records below come from official employer career pages found during the
-October 24, 2026 refresh. Unknown stipend, deadline, and duration values are
+October 25, 2026 refresh. Unknown stipend, deadline, and duration values are
 left empty instead of being invented. Users should verify every listing on its
 source page before applying.
 """
@@ -216,6 +216,54 @@ INDIA_INTERNSHIPS = [
         apply_url="https://jobs.lever.co/Sprinto?location=Bengaluru",
         source="Sprinto / Lever",
         source_job_id="talent-acquisition-intern-board",
+        last_synced_at=now(),
+        is_demo=False,
+    ),
+    Internship(
+        id="india-microsoft-university-internships",
+        title="University Internships — India",
+        company="Microsoft",
+        description="Microsoft's official student careers portal for university internship opportunities in India. Use the portal to check the current role, team, eligibility, and application window before applying.",
+        domain="Software Development",
+        skills_required=["Programming", "Problem Solving", "Data Structures", "Communication", "Collaboration"],
+        location="India",
+        work_mode=None,
+        eligibility={"degrees": ["B.E", "B.Tech", "B.Sc", "M.E", "M.Tech", "M.Sc"], "years": [3]},
+        apply_url="https://careers.microsoft.com/students/us/en/india",
+        source="Microsoft Student Careers India",
+        source_job_id="microsoft-university-internships-india",
+        last_synced_at=now(),
+        is_demo=False,
+    ),
+    Internship(
+        id="india-oracle-student-intern-search",
+        title="Student and Intern Opportunities — India",
+        company="Oracle",
+        description="Oracle's official careers search for student and intern roles in India. Filter the live search for internship or student positions and confirm the exact team, city, and requirements on the role page.",
+        domain="Technology",
+        skills_required=["Programming", "SQL", "Cloud", "Problem Solving", "Communication"],
+        location="India",
+        work_mode=None,
+        eligibility={"degrees": ["B.E", "B.Tech", "B.Sc", "M.E", "M.Tech", "M.Sc", "MBA"]},
+        apply_url="https://careers.oracle.com/en/sites/jobsearch/requisitions?keyword=Intern&location=India",
+        source="Oracle Careers India",
+        source_job_id="oracle-student-intern-india-search",
+        last_synced_at=now(),
+        is_demo=False,
+    ),
+    Internship(
+        id="india-adobe-student-careers",
+        title="Student and New Graduate Opportunities — India",
+        company="Adobe",
+        description="Adobe's official student and new-graduate careers portal for India. Use the current search results to verify whether an internship is open and review the exact skills and graduation requirements.",
+        domain="Technology",
+        skills_required=["Programming", "Java", "Python", "JavaScript", "Data Structures", "Algorithms"],
+        location="Noida or Bengaluru, India",
+        work_mode=None,
+        eligibility={"degrees": ["B.E", "B.Tech", "B.Sc", "M.E", "M.Tech", "M.Sc"]},
+        apply_url="https://careers.adobe.com/us/en/university",
+        source="Adobe Careers India",
+        source_job_id="adobe-student-careers-india",
         last_synced_at=now(),
         is_demo=False,
     ),

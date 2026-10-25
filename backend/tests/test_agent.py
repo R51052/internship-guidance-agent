@@ -12,6 +12,7 @@ from backend.models import ChatRequest, Profile
 from backend.scripts.seed_demo_data import seed_repository
 from backend.services.agent_service import AgentService
 from backend.services.llm_service import LLMService, LLMUnavailable, SYSTEM_PROMPT
+from backend.services.student_plan import build_student_plan
 
 
 def test_mock_chat_is_labelled_and_uses_only_database(client, app, headers, monkeypatch):
@@ -26,6 +27,18 @@ def test_mock_chat_is_labelled_and_uses_only_database(client, app, headers, monk
     known_ids = {record["id"] for record in app.state.repository.find("internships")}
     assert {item["internship"]["id"] for item in result["recommendations"]} <= known_ids
     assert result["tool_calls"][0]["tool"] == "explain_recommendations"
+    assert len(result["student_plan"]["weeks"]) == 4
+    assert result["student_plan"]["application_checklist"]
+
+
+def test_student_plan_uses_match_gaps_without_inventing_employer_facts():
+    plan = build_student_plan(Profile(year=3), [{
+        "internship": {"title": "Software Intern", "company": "Example", "id": "example"},
+        "missing_skills": ["Python", "SQL"],
+    }])
+    assert plan["target_role"] == "Software Intern"
+    assert plan["focus_skills"] == ["Python", "SQL"]
+    assert "Example" not in " ".join(plan["weeks"][0]["tasks"])
 
 
 def test_skill_gap_and_compare_return_profile_based_results(client, headers, profile_data):

@@ -4,7 +4,7 @@ Internpath is a full-stack internship discovery application:
 
 - **Backend:** FastAPI, MongoDB Atlas, JWT authentication, deterministic matching, bounded AI assistant.
 - **Frontend:** React + Vite with a responsive dashboard, live opportunity catalog, profile editor, and AI assistant.
-- **Live data:** a repeatable sync command imports recent internship listings from The Muse into MongoDB while preserving source links and sync timestamps.
+- **Live data:** a repeatable India-focused sync command stores source-linked employer and student-career records in MongoDB while preserving sync timestamps.
 
 ## Project layout
 
@@ -73,7 +73,7 @@ For an India-focused catalog sourced from official employer career pages, run:
 python -m backend.scripts.seed_india_internships
 ```
 
-This stores source-linked Amazon, Salesforce, Cargill, Red Hat, Walmart Global Tech, and GE Appliances India records in MongoDB. The script removes the previous Western-heavy The Muse records so the React catalog stays focused on India.
+This stores source-linked records from Amazon, Salesforce, Cargill, Red Hat, Walmart Global Tech, GE Appliances, Hevo Data, Merkle Science, Sprinto, Microsoft, Oracle, and Adobe. The script removes the previous Western-heavy The Muse records so the React catalog stays focused on India. Some Microsoft, Oracle, and Adobe entries are official student-career search portals rather than a single job ID; always verify the live role page before applying.
 
 ## 4. Optional public-feed synchronization
 
@@ -122,7 +122,7 @@ cd frontend-react
 npm run build
 ```
 
-The React app supports registration, login, MongoDB-backed profile persistence, opportunity search/filtering, recommendations, and the AI assistant. It does not claim that an application was submitted; external application actions remain on the official employer page.
+The React app supports registration, login, MongoDB-backed profile persistence, opportunity search/filtering, recommendations, and the AI assistant. The assistant now returns a deterministic four-week student action plan based on the student's profile and top match, including skill focus, project work, interview preparation, and an application checklist. It does not claim that an application was submitted; external application actions remain on the official employer page.
 
 ## Live-data limitation
 
